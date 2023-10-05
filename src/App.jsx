@@ -26,7 +26,9 @@ export default function LoginForm() {
   async function handleSubmit() {
     try {
       setLoading(true)
-      await login(email, password)      
+      console.log(password)
+      await login( {password, email})   
+      window.alert('Parabéns, login efetuado com sucesso!')   
     } catch (error) {
       setMessageError(true)
       console.log("Erro durante o login:", error);
