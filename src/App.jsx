@@ -20,8 +20,17 @@ export default function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isActive, setIsActive] = useState(false)
-  function handleSubmit() {
-    login(email, password)
+  const [loading, setLoading] = useState(false)
+  
+  async function handleSubmit() {
+    try {
+      setLoading(true)
+      await login(email, password)      
+    } catch (error) {
+      console.log("Erro durante o login:", error);
+    }finally{
+      setLoading(false)
+    }
   }
 
   function showButton() {
@@ -52,7 +61,7 @@ export default function LoginForm() {
         </div>
 
         <div className='button'>
-          <button onClick={handleSubmit} disabled={!isActive}>Login</button>
+          <button onClick={handleSubmit} disabled={!isActive || loading}>Login</button>
         </div>
       </div>
     </div>
