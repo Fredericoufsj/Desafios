@@ -20,8 +20,19 @@ export default function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isActive, setIsActive] = useState(false)
-  function handleSubmit() {
-    login(email, password)
+  const [loading, setLoading] = useState(false)
+  const [messageError, setMessageError] = useState(false)
+  
+  async function handleSubmit() {
+    try {
+      setLoading(true)
+      await login(email, password)      
+    } catch (error) {
+      setMessageError(true)
+      console.log("Erro durante o login:", error);
+    }finally{
+      setLoading(false)
+    }
   }
 
   function showButton() {
@@ -40,8 +51,7 @@ export default function LoginForm() {
     <div className='wrapper'>
       <div className='login-form'>
         <h1>Login Form 🐞</h1>
-        {/* Coloque a mensagem de erro de login na div abaixo. Mostre a div somente se houver uma mensagem de erro. */}
-        <div className='errorMessage'></div>
+        {messageError && <div className='errorMessage'>Erro durante o login</div>}
         <div className='row'>
           <label htmlFor={'email'}>Email</label>
           <input id={'email'} type={'email'} autoComplete='off' value={email} onChange={(event) => setEmail(event.target.value)} />
@@ -52,7 +62,7 @@ export default function LoginForm() {
         </div>
 
         <div className='button'>
-          <button onClick={handleSubmit} disabled={!isActive}>Login</button>
+          <button onClick={handleSubmit} disabled={!isActive || loading}>Login</button>
         </div>
       </div>
     </div>
