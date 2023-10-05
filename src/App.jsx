@@ -1,6 +1,6 @@
 import { login } from './utils';
 import './index.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // Instruções:
 // * Você tem um formulário de login INCOMPLETO
@@ -19,11 +19,22 @@ export default function LoginForm() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  const [isActive, setIsActive] = useState(false)
   function handleSubmit() {
     login(email, password)
-    console.log(email, password)
   }
+
+  function showButton() {
+    if (email != '' && password.length > 6) {
+      setIsActive(true)
+      return
+    }
+    setIsActive(false)
+  }
+
+  useEffect(() => {
+    showButton()
+  }, [email, password])
 
   return (
     <div className='wrapper'>
@@ -41,7 +52,7 @@ export default function LoginForm() {
         </div>
 
         <div className='button'>
-          <button onClick={handleSubmit}>Login</button>
+          <button onClick={handleSubmit} disabled={!isActive}>Login</button>
         </div>
       </div>
     </div>
